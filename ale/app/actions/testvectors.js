@@ -17,3 +17,11 @@ export function testVectorsGetlistFailed(error) {
     error,
   };
 }
+
+
+export function startLoadTestVectorfile(filename) {
+  return {
+    type: 'TESTVECTORS_GETLIST_FAILED',
+    filename,
+  };
+}
