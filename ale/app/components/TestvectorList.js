@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Dropdown from 'react-dropdown';
 import { testVectorsGetlist } from '../actions/testvectors';
 
 class TestvectorList extends Component {
   props: {
-    testVectorsGetlist: () => void
+    testVectorsGetlist: () => void,
+    files: string[]
   };
 
   render() {
     return (
       <div>
-        <button onClick={this.props.testVectorsGetlist} data-tclass="btn">
+        <button onClick={this.props.testVectorsGetlist}>
           <i className="fa fa-refresh" />
         </button>
+        <Dropdown options={this.props.files} onChange={() => {}} value={0} placeholder="Select a testfile" />
       </div>
     );
   }
