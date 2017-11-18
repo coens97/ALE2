@@ -1,4 +1,7 @@
 {
+  "editor.tabSize": 2,
+  "editor.detectIndentation": true,
+  "editor.formatOnSave": false,
   "javascript.validate.enable": false,
   "flow.useNPMPackagedFlow": true,
   "search.exclude": {
