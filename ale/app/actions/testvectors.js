@@ -25,3 +25,17 @@ export function startLoadTestVectorfile(filename) {
     filename,
   };
 }
+
+export function startLoadTestVectorfilePassed(test) {
+  return {
+    type: 'TESTVECTOR_LOADFILE_PASSED',
+    test,
+  };
+}
+
+export function startLoadTestVectorfileFailed(error) {
+  return {
+    type: 'TESTVECTOR_LOADFILE_FAILED',
+    error,
+  };
+}

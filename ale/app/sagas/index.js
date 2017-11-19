@@ -1,5 +1,6 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery, fork } from 'redux-saga/effects';
 import { testVectorsGetlist, testVectorsGetlistSuccess, testVectorsGetlistFailed } from '../actions/testvectors';
+import testVectorParserSaga from './testvectorparser';
 
 const fs = require('fs');
 
@@ -32,6 +33,7 @@ function* getTestvectorsList() {
 
 function* mySaga() {
   yield takeEvery('TESTVECTORS_GETLIST', getTestvectorsList);
+  yield fork(testVectorParserSaga);
   yield call(startApp);
 }
 
