@@ -21,7 +21,7 @@ export function testVectorsGetlistFailed(error) {
 
 export function startLoadTestVectorfile(filename) {
   return {
-    type: 'TESTVECTORS_GETLIST_FAILED',
+    type: 'TESTVECTOR_LOADFILE',
     filename,
   };
 }
