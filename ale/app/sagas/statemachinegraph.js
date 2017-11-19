@@ -8,7 +8,7 @@ function* createGraph({ statemachine }) {
       .map(x => `"${x}" [shape=${statemachine.states[x].final ? 'doublecircle' : 'circle'}]`)
   );
   dotfile = [...dotfile, '}'];
-  yield put(stateMachineGraph(dotfile.join()));
+  yield put(stateMachineGraph(dotfile.join('')));
 }
 
 function* stateMachineGraphSaga() {

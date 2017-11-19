@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Viz from 'viz.js';
-import HTMLReactParser from 'react-html-parser';
+import DOMPurify from 'dompurify';
 
 class Graph extends Component {
   props: {
@@ -16,7 +16,7 @@ class Graph extends Component {
   render() {
     return (
       <div>
-        {HTMLReactParser(Viz('digraph { a -> d; a -> v}', { format: 'svg', scale: 2 }))}
+        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(Viz(this.props.dot, { format: 'svg', scale: 2 })) }} />
       </div>
     );
   }
