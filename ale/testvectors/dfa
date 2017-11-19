@@ -1,0 +1,11 @@
+# automaton for regular expression (a|b*)
+alphabet: ab
+states: A,B
+final: B
+
+transitions:
+A,a --> A
+A,b --> B
+B,b --> B
+B,a --> A
+end.
