@@ -8,7 +8,7 @@ function checkDfa({ alphabet, states }) {
         return true; // If statemachine containe _ it is NDFA
       }
       const transitionChars = x.transitions.map(y => y.character);
-      if (alphabet.every(y => transitionChars.includes(y))){
+      if (alphabet.every(y => transitionChars.includes(y))) {
         return false;
       }
       return true;

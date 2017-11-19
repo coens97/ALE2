@@ -11,3 +11,10 @@ export function stateMachineMeta(meta) {
     meta,
   };
 }
+
+export function stateMachineGraph(graph) {
+  return {
+    type: 'STATEMACHINEGRAPH_LOADED',
+    graph,
+  };
+}

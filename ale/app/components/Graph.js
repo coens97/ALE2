@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Viz from 'viz.js';
+import HTMLReactParser from 'react-html-parser';
 
-class StateMeta extends Component {
+class Graph extends Component {
   props: {
-    dfa: boolean
+    dot: string
   };
 
   constructor(props) {
@@ -14,21 +16,17 @@ class StateMeta extends Component {
   render() {
     return (
       <div>
-        <ul>
-          <li>
-            dfa: {this.props.dfa ? 'Yes' : 'No' }
-          </li>
-        </ul>
+        {HTMLReactParser(Viz('digraph { a -> d; a -> v}', { format: 'svg', scale: 2 }))}
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  dfa: state.statemachinemeta.dfa,
+  dot: state.statemachinemeta.dot,
 });
 
 const mapDispatchToProps = () => ({});
 
 export default connect(mapStateToProps,
-  mapDispatchToProps)(StateMeta);
+  mapDispatchToProps)(Graph);
