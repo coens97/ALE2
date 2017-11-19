@@ -20,13 +20,21 @@ class TestvectorList extends Component {
   render() {
     return (
       <div>
-        <button onClick={this.props.testVectorsGetlist}>
-          <i className="fa fa-refresh" />
-        </button>
-        <Dropdown options={this.props.files} onChange={selected => this.setState({ selected: selected.value })} value={this.state.selected} placeholder="Select a testfile" />
-        <button onClick={() => this.props.startLoadVector(this.state.selected)}>
-          <i className="fa fa-play" />
-        </button>
+        <ul>
+          <li style={{ width: '50px', padding: '10px' }}>
+            <button onClick={this.props.testVectorsGetlist}>
+              <i className="fa fa-refresh" />
+            </button>
+          </li>
+          <li>
+            <Dropdown options={this.props.files} onChange={selected => this.setState({ selected: selected.value })} value={this.state.selected} placeholder="Select a testfile" />
+          </li>
+          <li style={{ padding: '10px' }}>
+            <button onClick={() => this.props.startLoadVector(this.state.selected)}>
+              <i className="fa fa-play" />
+            </button>
+          </li>
+        </ul>
       </div>
     );
   }

@@ -88,7 +88,7 @@ a:hover {
   margin-top: -1px;
   max-height: 200px;
   overflow-y: auto;
-  position: absolute;
+  /*position: absolute;*/
   top: 100%;
   width: 100%;
   z-index: 1000;
@@ -131,4 +131,15 @@ a:hover {
   cursor: default;
   display: block;
   padding: 8px 10px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+li {
+  float: left;
 }
