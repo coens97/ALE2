@@ -17,7 +17,7 @@ function* createGraph({ statemachine }) {
     }
     dotfile = dotfile.concat(
       state.transitions
-        .map(x => `"${s}" -> "${x.to}" [label="${x.character}"]`)
+        .map(x => `"${s}" -> "${x.to}" [label="${x.character === '_' ? 'ε' : x.character}"]`)
     );
     return false; // keep looping
   });
