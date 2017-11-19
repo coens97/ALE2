@@ -1,5 +1,6 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
 import { startLoadTestVectorfileFailed, startLoadTestVectorfilePassed } from '../actions/testvectors';
+import { stateMachineLoaded } from '../actions/statemachine';
 
 const fs = require('fs');
 
@@ -90,8 +91,29 @@ function* loadFile({ filename }) {
   }
 }
 
+function* fileToStatemachine({ test }) {
+  // Transform the data from the file to structure used within application
+  const states = test.states
+    .reduce((result, item, index) => ({
+      ...result,
+      [item]: {
+        initial: index === 0,
+        final: test.final.includes(item),
+        transitions: test.transitions
+          .filter(x => x.from === item)
+          .map(x => ({ character: x.character, to: x.to }))
+      }
+    }), {});
+  const statemachine = {
+    alphabet: test.alphabet,
+    states,
+  };
+  yield put(stateMachineLoaded(statemachine));
+}
+
 function* testVectorParserSaga() {
   yield takeEvery('TESTVECTOR_LOADFILE', loadFile);
+  yield takeEvery('TESTVECTOR_LOADFILE_PASSED', fileToStatemachine);
 }
 
 export default testVectorParserSaga;
