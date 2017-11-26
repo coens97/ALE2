@@ -26,7 +26,7 @@ class InputText extends Component {
          <button style={{float: 'right'}} className="btn btn-form btn-primary" onClick={() => this.props.testWord(this.state.word)}>OK</button>
         </span>
         <span className="nav-group-item">
-          {this.state.passed}
+          {this.props.passed}
         </span>
       </div>
     );
