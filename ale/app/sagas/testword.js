@@ -1,6 +1,20 @@
 import { takeEvery, select, put } from 'redux-saga/effects';
 import { testWordResult } from '../actions/testword';
 
+const takeTransition = (states, statemachine, char) => {
+  const newStates = states
+    .map(x => statemachine.states[x])
+    .map(state => 
+      // Get all epselon transition
+      state.transitions.filter(transition => transition.character === char).map(x => x.to)) 
+    .reduce((a, b) => a.concat(b)); // from [[a,b],[c]] to [a,b,c] hence flatten array
+  return unique(newStates);
+}
+
+const unique = (list) => { // Remove duplicates
+  return [...new Set(list)];
+}
+
 function* testWord({ word }) {
   const statemachine = yield select(state => state.statemachine);
 
@@ -10,7 +24,33 @@ function* testWord({ word }) {
     return;
   }
 
-  let currentStates;
+  const allStates = Object.keys(statemachine.states).map(state => ({...statemachine.states[state], state}));
+  let currentStates = allStates.filter(state => state.initial).map(x => x.state);
+  
+  if (word.length === 0) {
+    // If lenghth is 0, only take epselon transitions
+    currentStates = unique(currentStates
+      .concat(takeTransition(currentStates, statemachine, '_')));
+  }
+
+  for (let i = 0, len = word.length; i < len; i++) {
+    // Take all epsilon states
+    currentStates = unique(currentStates
+      .concat(takeTransition(currentStates, statemachine, '_')));
+    // Take the step for the character
+    currentStates = takeTransition(currentStates, statemachine, word[i]);
+    if (currentStates.length === 0){
+      yield put(testWordResult('No transition'));
+      return;
+    }
+  }
+
+  // Check if any final state
+  if (!currentStates.map(x => statemachine.states[x]).some(x => x.final)){
+    yield put(testWordResult('No final state'));
+    return;
+  }
+
   yield put(testWordResult('Passed'));
 }
 
