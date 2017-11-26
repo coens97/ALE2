@@ -15,11 +15,14 @@ export default class Home extends Component {
         </header>
         <div className="window-content">
           <div className="pane-group">
-            <div className="pane-sm sidebar">...</div>
+            <div className="pane-sm sidebar">
+              <nav className="nav-group">
+                <h5 className="nav-group-title">Meta</h5>
+                <StateMeta />
+              </nav>
+            </div>
             <div className="pane">
               <div data-tid="container">
-                
-                <StateMeta />
                 <Graph />
               </div>
             </div>

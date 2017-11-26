@@ -14,11 +14,10 @@ class StateMeta extends Component {
   render() {
     return (
       <div>
-        <ul>
-          <li>
-            dfa: {this.props.dfa ? 'Yes' : 'No' }
-          </li>
-        </ul>
+        <span className="nav-group-item">
+          <span className="icon icon-check"></span>
+          dfa: {this.props.dfa ? 'Yes' : 'No' }
+        </span>
       </div>
     );
   }

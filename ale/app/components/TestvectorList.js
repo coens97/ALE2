@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Dropdown from 'react-dropdown';
 import { testVectorsGetlist, startLoadTestVectorfile } from '../actions/testvectors';
 
 class TestvectorList extends Component {
@@ -35,6 +34,7 @@ class TestvectorList extends Component {
           </li>
           <li style={{ padding: '12px' }}>
             <select className="form-control" onChange={selected => this.setState({ selected: selected.target.value })}>
+              <option>Select a file</option>
               {this.props.files.map(createItem)}
             </select>
           </li>
