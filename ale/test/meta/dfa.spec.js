@@ -10,7 +10,7 @@ it('Can test dfa', () => {
     yield fork(testVectorParserSaga);
   }
   // Two categories of test vector files
-  const nonDfa = ['abstar'];
+  const nonDfa = ['abstar', 'epselon'];
   const dfa = ['dfa'];
 
   const makePromise = (filename, dfa) => 
