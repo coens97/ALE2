@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Dropdown from 'react-dropdown';
 import { testVectorsGetlist, startLoadTestVectorfile } from '../actions/testvectors';
 
-class TestvectorList extends Component {
+class InputText extends Component {
   props: {
-    testVectorsGetlist: () => void,
-    startLoadVector: (x: string) => void,
-    files: string[]
+    testWord: (x: string) => void
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      selected: ''
+      word: ''
     };
   }
 
@@ -21,16 +18,16 @@ class TestvectorList extends Component {
     return (
       <div>
         <ul>
-          <li style={{ width: '50px', padding: '10px' }}>
-            <button className="btn btn-default" onClick={this.props.testVectorsGetlist}>
-              <i className="fa fa-refresh" />
-            </button>
-          </li>
           <li>
             <Dropdown options={this.props.files} onChange={selected => this.setState({ selected: selected.value })} value={this.state.selected} placeholder="Select a testfile" />
           </li>
+          <li style={{ width: '50px', padding: '10px' }}>
+            <button onClick={this.props.testVectorsGetlist}>
+              <i className="fa fa-refresh" />
+            </button>
+          </li>
           <li style={{ padding: '10px' }}>
-            <button className="btn btn-default" onClick={() => this.props.startLoadVector(this.state.selected)}>
+            <button onClick={() => this.props.startLoadVector(this.state.selected)}>
               <i className="fa fa-play" />
             </button>
           </li>

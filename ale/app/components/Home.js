@@ -9,12 +9,25 @@ import styles from './Home.css';
 export default class Home extends Component {
   render() {
     return (
-      <div>
-        <div className={styles.container} data-tid="container">
+      <div className="window">
+        <header className="toolbar toolbar-header">
           <TestvectorList />
-          <StateMeta />
-          <Graph />
+        </header>
+        <div className="window-content">
+          <div className="pane-group">
+            <div className="pane-sm sidebar">...</div>
+            <div className="pane">
+              <div data-tid="container">
+                
+                <StateMeta />
+                <Graph />
+              </div>
+            </div>
+          </div>
         </div>
+        <footer className="toolbar toolbar-footer">
+          <h1 className="title">Automata and Process theory</h1>
+        </footer>
       </div>
     );
   }
