@@ -14,6 +14,7 @@ class StateMeta extends Component {
   render() {
     return (
       <div>
+        <h5 className="nav-group-title">Meta</h5>
         <span className="nav-group-item">
           <span className="icon icon-check"></span>
           dfa: {this.props.dfa ? 'Yes' : 'No' }

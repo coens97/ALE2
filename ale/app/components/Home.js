@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import TestvectorList from './TestvectorList';
 import StateMeta from './StateMeta';
 import Graph from './Graph';
+import InputText from './InputText';
 import styles from './Home.css';
 
 
@@ -17,8 +18,8 @@ export default class Home extends Component {
           <div className="pane-group">
             <div className="pane-sm sidebar">
               <nav className="nav-group">
-                <h5 className="nav-group-title">Meta</h5>
                 <StateMeta />
+                <InputText />
               </nav>
             </div>
             <div className="pane">

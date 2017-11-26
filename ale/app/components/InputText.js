@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { testVectorsGetlist, startLoadTestVectorfile } from '../actions/testvectors';
+import { testWord } from '../actions/testword';
 
 class InputText extends Component {
   props: {
-    testWord: (x: string) => void
+    testWord: (x: string) => void,
+    passed: string,
   };
 
   constructor(props) {
@@ -17,38 +18,30 @@ class InputText extends Component {
   render() {
     return (
       <div>
-        <ul>
-          <li>
-            <Dropdown options={this.props.files} onChange={selected => this.setState({ selected: selected.value })} value={this.state.selected} placeholder="Select a testfile" />
-          </li>
-          <li style={{ width: '50px', padding: '10px' }}>
-            <button onClick={this.props.testVectorsGetlist}>
-              <i className="fa fa-refresh" />
-            </button>
-          </li>
-          <li style={{ padding: '10px' }}>
-            <button onClick={() => this.props.startLoadVector(this.state.selected)}>
-              <i className="fa fa-play" />
-            </button>
-          </li>
-        </ul>
+        <h5 className="nav-group-title">Test word</h5>
+        <span className="nav-group-item">
+         <input type="text" className="form-control" placeholder="" onChange={e => this.setState({word: e.target.value})} />
+        </span>
+        <span className="nav-group-item">
+         <button style={{float: 'right'}} className="btn btn-form btn-primary" onClick={() => this.props.testWord(this.state.word)}>OK</button>
+        </span>
+        <span className="nav-group-item">
+          {this.state.passed}
+        </span>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  files: state.testvectors.files,
+  passed: state.dynamicresult.testword,
 });
 
 const mapDispatchToProps = dispatch => ({
-  testVectorsGetlist: () => {
-    dispatch(testVectorsGetlist());
-  },
-  startLoadVector: (filename) => {
-    dispatch(startLoadTestVectorfile(filename));
-  },
+  testWord: word => {
+    dispatch(testWord(word));
+  }
 });
 
 export default connect(mapStateToProps,
-  mapDispatchToProps)(TestvectorList);
+  mapDispatchToProps)(InputText);
