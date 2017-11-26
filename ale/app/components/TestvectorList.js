@@ -18,6 +18,13 @@ class TestvectorList extends Component {
   }
 
   render() {
+    const createItem = (item) =>
+      <option
+        key={item}
+        value={item}
+      >
+        {item}
+      </option>;
     return (
       <div>
         <ul>
@@ -26,8 +33,10 @@ class TestvectorList extends Component {
               <i className="fa fa-refresh" />
             </button>
           </li>
-          <li>
-            <Dropdown options={this.props.files} onChange={selected => this.setState({ selected: selected.value })} value={this.state.selected} placeholder="Select a testfile" />
+          <li style={{ padding: '12px' }}>
+            <select className="form-control" onChange={selected => this.setState({ selected: selected.target.value })}>
+              {this.props.files.map(createItem)}
+            </select>
           </li>
           <li style={{ padding: '10px' }}>
             <button className="btn btn-default" onClick={() => this.props.startLoadVector(this.state.selected)}>
