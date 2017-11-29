@@ -1,34 +1,45 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import { fork } from 'redux-saga/effects';
-import stateMachineMetaSaga from '../../app/sagas/statemachinemeta';
+import { combineReducers } from 'redux';
+import statemachine from '../../app/reducers/statemachine';
+import testword from '../../app/sagas/testword';
 import testVectorParserSaga from '../../app/sagas/testvectorparser';
 
-it('Can test dfa', () => {
+it('Can test words', () => {
   // Combine needed sagas
   function* saga() {
-    yield fork(stateMachineMetaSaga);
+    yield fork(testword);
     yield fork(testVectorParserSaga);
   }
   // Two categories of test vector files
-  const nonDfa = ['abstar', 'epselon', 'ndfa'];
-  const dfas = ['dfa'];
+  const tests = 
+    {
+      'ndfa': [['AAAABCACACAC','Passed'],['AAAABCACACACA','No final state']],
+      'epselon': [['aab','No transition'],['abbbb', 'Passed'],['abbbbB','No transition']]
+    };
 
-  const makePromise = (filename, dfa) =>
+  const makePromise = (filename, word, result) =>
     expectSaga(saga)
+      .withReducer(combineReducers({ statemachine }))
       .put.like({ action: { type: 'TESTVECTOR_LOADFILE_PASSED' } }) // Is tested inside other test
-      .put.like({ action: { type: 'STATEMACHINE_LOADED' } }) // Skip
-      .put({
-        type: 'STATEMACHINEMETA_LOADED',
-        meta: { dfa }
-      })
+      .put.like({ action: { type: 'STATEMACHINE_LOADED' } })
       .dispatch({ // Call to load file
         type: 'TESTVECTOR_LOADFILE',
         filename,
       })
+      .delay(20)
+      .put({
+        type: 'TESTWORD_TEST_RESULT',
+        result,
+      })
+      .dispatch({ // Call to test a word
+        type: 'TESRWORD_TEST',
+        word,
+      })
       .run();
 
   // Make a list of promises, run all tests in parallel
-  const promises = nonDfa.map(x => makePromise(x, false))
-                    .concat(dfas.map(x => makePromise(x, true)));
+  const promises = Object.keys(tests).map((x) =>  tests[x].map((y) => makePromise(x, y[0], y[1])))
+    .reduce((a, b) => a.concat(b)); // Select many
   return Promise.all(promises); // Let the test wait until all are finished
 });

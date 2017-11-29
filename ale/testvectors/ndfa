@@ -1,5 +1,5 @@
 # automaton for regular expression
-alphabet: AB
+alphabet: ABC
 states: Z,A,B,C
 final: C
 
@@ -10,5 +10,7 @@ A,A --> A
 A,B --> B
 A,_ --> C
 B,A --> B
+B,C --> B
+B,C --> C
 C,B --> A
 end.
