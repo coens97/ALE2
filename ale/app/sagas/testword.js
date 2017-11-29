@@ -23,16 +23,11 @@ function* testWord({ word }) {
     return;
   }
 
-  const allStates = Object.keys(statemachine.states).map(state => ({ ...statemachine.states[state], state }));
+  const allStates = Object.keys(statemachine.states)
+    .map(state => ({ ...statemachine.states[state], state }));
   let currentStates = allStates.filter(state => state.initial).map(x => x.state);
 
-  if (word.length === 0) {
-    // If lenghth is 0, only take epselon transitions
-    currentStates = unique(currentStates
-      .concat(takeTransition(currentStates, statemachine, '_')));
-  }
-
-  for (let i = 0, len = word.length; i < len; i++) {
+  for (let i = 0, len = word.length; i < len; i += 1) {
     // Take all epsilon states
     currentStates = unique(currentStates
       .concat(takeTransition(currentStates, statemachine, '_')));
@@ -43,6 +38,9 @@ function* testWord({ word }) {
       return;
     }
   }
+
+  currentStates = unique(currentStates
+    .concat(takeTransition(currentStates, statemachine, '_')));
 
   // Check if any final state
   if (!currentStates.map(x => statemachine.states[x]).some(x => x.final)) {
