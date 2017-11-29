@@ -4,29 +4,28 @@ import { testWordResult } from '../actions/testword';
 const takeTransition = (states, statemachine, char) => {
   const newStates = states
     .map(x => statemachine.states[x])
-    .map(state => 
+    .map(state =>
       // Get all epselon transition
-      state.transitions.filter(transition => transition.character === char).map(x => x.to)) 
+      state.transitions.filter(transition => transition.character === char).map(x => x.to))
     .reduce((a, b) => a.concat(b)); // from [[a,b],[c]] to [a,b,c] hence flatten array
   return unique(newStates);
-}
+};
 
-const unique = (list) => { // Remove duplicates
-  return [...new Set(list)];
-}
+const unique = (list) =>  // Remove duplicates
+   [...new Set(list)];
 
 function* testWord({ word }) {
   const statemachine = yield select(state => state.statemachine);
 
   // Test whetever statemachine is loaded
-  if (!(('alphabet' in statemachine) && ('states' in statemachine))) { 
+  if (!(('alphabet' in statemachine) && ('states' in statemachine))) {
     yield put(testWordResult('No statemachine'));
     return;
   }
 
-  const allStates = Object.keys(statemachine.states).map(state => ({...statemachine.states[state], state}));
+  const allStates = Object.keys(statemachine.states).map(state => ({ ...statemachine.states[state], state }));
   let currentStates = allStates.filter(state => state.initial).map(x => x.state);
-  
+
   if (word.length === 0) {
     // If lenghth is 0, only take epselon transitions
     currentStates = unique(currentStates
@@ -39,14 +38,14 @@ function* testWord({ word }) {
       .concat(takeTransition(currentStates, statemachine, '_')));
     // Take the step for the character
     currentStates = takeTransition(currentStates, statemachine, word[i]);
-    if (currentStates.length === 0){
+    if (currentStates.length === 0) {
       yield put(testWordResult('No transition'));
       return;
     }
   }
 
   // Check if any final state
-  if (!currentStates.map(x => statemachine.states[x]).some(x => x.final)){
+  if (!currentStates.map(x => statemachine.states[x]).some(x => x.final)) {
     yield put(testWordResult('No final state'));
     return;
   }

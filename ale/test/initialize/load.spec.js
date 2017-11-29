@@ -14,7 +14,7 @@ it('Can read a file', () =>
           'A',
           'B'
         ],
-        'final': [
+        final: [
           'B'
         ],
         transitions: [
@@ -51,7 +51,7 @@ it('Can read a file', () =>
         states: {
           A: {
             initial: true,
-            'final': false,
+            final: false,
             transitions: [
               {
                 character: 'a',
@@ -65,7 +65,7 @@ it('Can read a file', () =>
           },
           B: {
             initial: false,
-            'final': true,
+            final: true,
             transitions: [
               {
                 character: 'b',
