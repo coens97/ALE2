@@ -1,0 +1,7 @@
+MAIN -> EXPRESSION
+EXPRESSION -> 
+	".(" EXPRESSION "," EXPRESSION ")" |
+	"|(" EXPRESSION "," EXPRESSION ")" |
+	"*(" EXPRESSION ")" |
+	STATE
+STATE -> [A-Z] | [a-z] | "_"

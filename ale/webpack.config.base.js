@@ -19,7 +19,8 @@ export default {
           cacheDirectory: true
         }
       }
-    }]
+    },
+    { test: /\.ne$/, loader: 'nearley-loader' }]
   },
 
   output: {

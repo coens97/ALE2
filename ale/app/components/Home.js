@@ -4,8 +4,7 @@ import TestvectorList from './TestvectorList';
 import StateMeta from './StateMeta';
 import Graph from './Graph';
 import InputText from './InputText';
-import styles from './Home.css';
-
+import RegexText from './RegexText';
 
 export default class Home extends Component {
   render() {
@@ -20,6 +19,7 @@ export default class Home extends Component {
               <nav className="nav-group">
                 <StateMeta />
                 <InputText />
+                <RegexText />
               </nav>
             </div>
             <div className="pane">

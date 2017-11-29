@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { testWord } from '../actions/testword';
+import { loadRegex } from '../actions/regex';
 
-class InputText extends Component {
+class RegexText extends Component {
   props: {
-    testWord: (x: string) => void,
+    loadRegex: (x: string) => void,
     passed: string
   };
 
@@ -18,12 +18,12 @@ class InputText extends Component {
   render() {
     return (
       <div>
-        <h5 className="nav-group-title">Test word</h5>
+        <h5 className="nav-group-title">Regex</h5>
         <span className="nav-group-item">
           <input type="text" className="form-control" placeholder="" onChange={e => this.setState({ word: e.target.value })} />
         </span>
         <span className="nav-group-item">
-          <button style={{ float: 'right' }} className="btn btn-form btn-primary" onClick={() => this.props.testWord(this.state.word)}>OK</button>
+          <button style={{ float: 'right' }} className="btn btn-form btn-primary" onClick={() => this.props.loadRegex(this.state.word)}>OK</button>
         </span>
         <span className="nav-group-item">
           {this.props.passed}
@@ -34,14 +34,14 @@ class InputText extends Component {
 }
 
 const mapStateToProps = state => ({
-  passed: state.dynamicresult.testword,
+  passed: state.dynamicresult.regexerror,
 });
 
 const mapDispatchToProps = dispatch => ({
-  testWord: word => {
-    dispatch(testWord(word));
+  loadRegex: word => {
+    dispatch(loadRegex(word));
   }
 });
 
 export default connect(mapStateToProps,
-  mapDispatchToProps)(InputText);
+  mapDispatchToProps)(RegexText);

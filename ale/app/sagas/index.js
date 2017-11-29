@@ -3,6 +3,7 @@ import { testVectorsGetlist, testVectorsGetlistSuccess, testVectorsGetlistFailed
 import testVectorParserSaga from './testvectorparser';
 import stateMachineMetaSaga from './statemachinemeta';
 import stateMachineGraphSaga from './statemachinegraph';
+import regexSaga from './regex';
 import testwordSaga from './testword';
 
 const fs = require('fs');
@@ -40,6 +41,7 @@ function* mySaga() {
   yield fork(stateMachineMetaSaga);
   yield fork(stateMachineGraphSaga);
   yield fork(testwordSaga);
+  yield fork(regexSaga);
   yield call(startApp);
 }
 
