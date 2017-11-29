@@ -12,10 +12,10 @@ it('Can test words', () => {
     yield fork(testVectorParserSaga);
   }
   // Two categories of test vector files
-  const tests = 
+  const tests =
     {
-      'ndfa': [['AAAABCACACAC','Passed'],['AAAABCACACACA','No final state']],
-      'epselon': [['aab','No transition'],['abbbb', 'Passed'],['abbbbB','No transition']]
+      ndfa: [['AAAABCACACAC', 'Passed'], ['AAAABCACACACA', 'No final state']],
+      epselon: [['aab', 'No transition'], ['abbbb', 'Passed'], ['abbbbB', 'No transition']]
     };
 
   const makePromise = (filename, word, result) =>
@@ -23,15 +23,15 @@ it('Can test words', () => {
       .withReducer(combineReducers({ statemachine }))
       .put.like({ action: { type: 'TESTVECTOR_LOADFILE_PASSED' } }) // Is tested inside other test
       .put.like({ action: { type: 'STATEMACHINE_LOADED' } })
-      .dispatch({ // Call to load file
-        type: 'TESTVECTOR_LOADFILE',
-        filename,
-      })
-      .delay(20)
       .put({
         type: 'TESTWORD_TEST_RESULT',
         result,
       })
+      .dispatch({ // Call to load file
+        type: 'TESTVECTOR_LOADFILE',
+        filename,
+      })
+      .delay(20) // annoying delay
       .dispatch({ // Call to test a word
         type: 'TESRWORD_TEST',
         word,
@@ -39,7 +39,7 @@ it('Can test words', () => {
       .run();
 
   // Make a list of promises, run all tests in parallel
-  const promises = Object.keys(tests).map((x) =>  tests[x].map((y) => makePromise(x, y[0], y[1])))
+  const promises = Object.keys(tests).map((x) => tests[x].map((y) => makePromise(x, y[0], y[1])))
     .reduce((a, b) => a.concat(b)); // Select many
   return Promise.all(promises); // Let the test wait until all are finished
 });
