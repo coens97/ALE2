@@ -143,6 +143,16 @@ const parseRegex = (state, regex, start, end) => {
       current = parseRegex(current, regex[3], startDownState, endDownState);
       break;
     }
+    case '.(': {
+      // Create a state in the middle
+      const number = Object.keys(current.states).length;
+      const middleState = `m${number}`;
+      current = addState(current, middleState);
+      // Parse both sides
+      current = parseRegex(current, regex[1], start, middleState);
+      current = parseRegex(current, regex[3], middleState, end);
+      break;
+    }
     default: { // if it is a transition
       const letter = regex[0][0];
       current = {
