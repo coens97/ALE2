@@ -1,0 +1,12 @@
+# automaton for regular expression just letter a
+alphabet: a
+states: Z,A,B,C,D,E
+final: E
+
+transitions:
+Z,_ --> A
+A,_ --> B
+B,_ --> C
+C,_ --> D
+D,a --> E
+end.

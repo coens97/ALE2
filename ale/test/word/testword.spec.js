@@ -15,7 +15,8 @@ it('Can test words', () => {
   const tests =
     {
       ndfa: [['AAAABCACACAC', 'Passed'], ['AAAABCACACACA', 'No final state']],
-      epselon: [['aab', 'No transition'], ['abbbb', 'Passed'], ['abbbbB', 'No transition']]
+      epselon: [['aab', 'No transition'], ['abbbb', 'Passed'], ['abbbbB', 'No transition']],
+      manyepselon: [['a', 'Passed']],
     };
 
   const makePromise = (filename, word, result) =>
