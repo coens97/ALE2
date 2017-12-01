@@ -19,10 +19,92 @@ function* loadRegex({ text }) {
   }
 }
 
-function* constructSateMachine({ regex }) {
-  const statemachine = {};
+function parseRegex(statemachine, regex, start, end) {
+  let current = statemachine; // statemachine worked on during this itteration
+  // Match the operand
+  switch (regex[0]) {
+    case '*(':
+      
+      const number = Object.keys(current.states).length;
+      const startState = `br${number}`;
+      const endState = `er${number}`;
+      // add start state for repeat
+      current = {
+        ...current,
+        states: {
+          ...current.states,
+          [startState]: {
+            initial: false,
+            final: false,
+            transitions: [],
+          }
+        }
+      };
+      // add end state with a transition to the end
+      current = {
+        ...current,
+        states: {
+          ...current.states,
+          [endState]: {
+            initial: false,
+            final: false,
+            transitions: [
+              {
+                character: '_',
+                to: end,
+              }
+            ],
+          }
+        }
+      };
+      // add epselon from start to end, and add epselon to first state of the repeat
+      current = {
+        ...current,
+        states: {
+          ...current.states,
+          [start]: {
+            ...current.states[start],
+            transitions: current.states[start].transitions.concat(
+              [{
+                character: '_',
+                to: end,
+              },
+              {
+                character: '_',
+                to: startState,
+              }
+              ]
+            )
+          }
+        }
+      };
 
-  //yield put(stateMachineLoaded(statemachine));
+      break;
+    default: // if it is a transition
+
+  }
+  return current;
+}
+
+function* constructSateMachine({ regex }) {
+  // Make empty statemachine with initial and final state
+  const initialStatemachine = {
+    alphabet: [],
+    states: {
+      i: {
+        initial: true,
+        final: false,
+        transitions: [],
+      },
+      f: {
+        initial: false,
+        final: true,
+        transitions: [],
+      }
+    }
+  };
+  const statemachine = parseRegex(initialStatemachine, regex, 'i', 'f');
+  yield put(stateMachineLoaded(statemachine));
 }
 
 function* regexSaga() {
