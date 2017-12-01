@@ -2,8 +2,8 @@ import { takeEvery, put } from 'redux-saga/effects';
 import { Parser, Grammar } from 'nearley';
 import { stateMachineLoaded } from '../actions/statemachine';
 import { loadRegexPassed, loadRegexError } from '../actions/regex';
-import grammar from './regex.ne';
-import statemachine from '../reducers/statemachine';
+// import grammar from './regex.ne'; // nearley-loader doesnt work with jest :(
+import grammar from './regexne';
 
 function* loadRegex({ text }) {
   // Create parser from the regex.ne file

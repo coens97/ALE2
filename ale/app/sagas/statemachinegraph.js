@@ -3,7 +3,7 @@ import { stateMachineGraph } from '../actions/statemachine';
 
 function* createGraph({ statemachine }) {
   // begin with static first line
-  let dotfile = ['digraph {', 'rankdir=LR;'];
+  let dotfile = ['digraph {', 'rankdir=LR;', '"" [shape=none]'];
   // add every state
   dotfile = dotfile.concat(
     Object.keys(statemachine.states)

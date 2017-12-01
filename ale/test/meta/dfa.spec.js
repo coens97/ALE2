@@ -25,7 +25,13 @@ it('Can test dfa', () => {
         type: 'TESTVECTOR_LOADFILE',
         filename,
       })
-      .run();
+      .run()
+      .catch((err) => {
+        const location = `${filename} ${dfa} failed`;
+        console.error(location);
+        console.error(err);
+        throw Error(location);
+      });
 
   // Make a list of promises, run all tests in parallel
   const promises = nonDfa.map(x => makePromise(x, false))
