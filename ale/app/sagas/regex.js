@@ -3,6 +3,7 @@ import { Parser, Grammar } from 'nearley';
 import { stateMachineLoaded } from '../actions/statemachine';
 import { loadRegexPassed, loadRegexError } from '../actions/regex';
 import grammar from './regex.ne';
+import statemachine from '../reducers/statemachine';
 
 function* loadRegex({ text }) {
   // Create parser from the regex.ne file
@@ -19,8 +20,55 @@ function* loadRegex({ text }) {
   }
 }
 
-function parseRegex(statemachine, regex, start, end) {
-  let current = statemachine; // statemachine worked on during this itteration
+// Start of constructing statemachine
+function* constructSateMachine({ regex }) {
+  // Make empty statemachine with initial and final state
+  const initialStatemachine = {
+    alphabet: [],
+    states: {
+      i: {
+        initial: true,
+        final: false,
+        transitions: [],
+      },
+      f: {
+        initial: false,
+        final: true,
+        transitions: [],
+      }
+    }
+  };
+  const state = parseRegex(initialStatemachine, regex, 'i', 'f');
+  yield put(stateMachineLoaded(state));
+}
+
+// Helper functions to mutate the statemachine
+const addState = (state, statename) => ({
+  ...state,
+  states: {
+    ...state.states,
+    [statename]: {
+      initial: false,
+      final: false,
+      transitions: [],
+    }
+  }
+});
+
+const addStateTransitions = (state, statename, transitions) => ({
+  ...state,
+  states: {
+    ...state.states,
+    [statename]: {
+      ...state.states[statename],
+      transitions: state.states[statename].transitions.concat(transitions)
+    }
+  }
+});
+
+// Recursive method to parse the regex
+const parseRegex = (state, regex, start, end) => {
+  let current = state; // statemachine worked on during this itteration
   // Match the operand
   switch (regex[0]) {
     case '*(': {
@@ -28,63 +76,71 @@ function parseRegex(statemachine, regex, start, end) {
       const startState = `br${number}`;
       const endState = `er${number}`;
       // add start state for repeat
-      current = {
-        ...current,
-        states: {
-          ...current.states,
-          [startState]: {
-            initial: false,
-            final: false,
-            transitions: [],
-          }
-        }
-      };
+      current = addState(current, startState);
       // add end state with a transition to the end, and to its begin state
-      current = {
-        ...current,
-        states: {
-          ...current.states,
-          [endState]: {
-            initial: false,
-            final: false,
-            transitions: [
-              {
-                character: '_',
-                to: end,
-              },
-              {
-                character: '_',
-                to: startState,
-              }
-            ],
+      current = addState(current, endState);
+      current = addStateTransitions(current, endState,
+        [
+          {
+            character: '_',
+            to: end,
+          },
+          {
+            character: '_',
+            to: startState,
           }
-        }
-      };
+        ]);
       // add epselon from start to end, and add epselon to first state of the repeat
-      current = {
-        ...current,
-        states: {
-          ...current.states,
-          [start]: {
-            ...current.states[start],
-            transitions: current.states[start].transitions.concat(
-              [{
-                character: '_',
-                to: end,
-              },
-              {
-                character: '_',
-                to: startState,
-              }
-              ]
-            )
-          }
+      current = addStateTransitions(current, start,
+        [{
+          character: '_',
+          to: end,
+        },
+        {
+          character: '_',
+          to: startState,
         }
-      };
+        ]);
       current = parseRegex(current, regex[1], startState, endState); // Recursively parse leaves
       break;
     }
     case '|(': {
+      const number = Object.keys(current.states).length;
+      const startUpState = `bu${number}`;
+      const endUpState = `eu${number}`;
+      const startDownState = `bd${number}`;
+      const endDownState = `ed${number}`;
+      // Create start states
+      current = addState(current, startUpState);
+      current = addState(current, startDownState);
+      // make epselon transitions to the start states
+      current = addStateTransitions(current, start,
+        [{
+          character: '_',
+          to: startUpState,
+        },
+        {
+          character: '_',
+          to: startDownState,
+        }
+        ]);
+      // add end states
+      current = addState(current, endUpState);
+      current = addState(current, endDownState);
+      // add transitions from the end states to the end
+      current = addStateTransitions(current, endUpState,
+        [{
+          character: '_',
+          to: end,
+        }]);
+      current = addStateTransitions(current, endDownState,
+        [{
+          character: '_',
+          to: end,
+        }]);
+      // run the 2 leaves
+      current = parseRegex(current, regex[1], startUpState, endUpState);
+      current = parseRegex(current, regex[3], startDownState, endDownState);
       break;
     }
     default: { // if it is a transition
@@ -106,28 +162,7 @@ function parseRegex(statemachine, regex, start, end) {
     }
   }
   return current;
-}
-
-function* constructSateMachine({ regex }) {
-  // Make empty statemachine with initial and final state
-  const initialStatemachine = {
-    alphabet: [],
-    states: {
-      i: {
-        initial: true,
-        final: false,
-        transitions: [],
-      },
-      f: {
-        initial: false,
-        final: true,
-        transitions: [],
-      }
-    }
-  };
-  const statemachine = parseRegex(initialStatemachine, regex, 'i', 'f');
-  yield put(stateMachineLoaded(statemachine));
-}
+};
 
 function* regexSaga() {
   yield takeEvery('REGEX_LOAD', loadRegex);
