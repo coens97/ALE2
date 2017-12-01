@@ -23,8 +23,7 @@ function parseRegex(statemachine, regex, start, end) {
   let current = statemachine; // statemachine worked on during this itteration
   // Match the operand
   switch (regex[0]) {
-    case '*(':
-      
+    case '*(': {
       const number = Object.keys(current.states).length;
       const startState = `br${number}`;
       const endState = `er${number}`;
@@ -40,7 +39,7 @@ function parseRegex(statemachine, regex, start, end) {
           }
         }
       };
-      // add end state with a transition to the end
+      // add end state with a transition to the end, and to its begin state
       current = {
         ...current,
         states: {
@@ -52,6 +51,10 @@ function parseRegex(statemachine, regex, start, end) {
               {
                 character: '_',
                 to: end,
+              },
+              {
+                character: '_',
+                to: startState,
               }
             ],
           }
@@ -78,10 +81,29 @@ function parseRegex(statemachine, regex, start, end) {
           }
         }
       };
-
+      current = parseRegex(current, regex[1], startState, endState); // Recursively parse leaves
       break;
-    default: // if it is a transition
-
+    }
+    case '|(': {
+      break;
+    }
+    default: { // if it is a transition
+      const letter = regex[0][0];
+      current = {
+        ...current,
+        alphabet: [...new Set([...current.alphabet, letter])],
+        states: {
+          ...current.states,
+          [start]: {
+            ...current.states[start],
+            transitions: current.states[start].transitions.concat([{
+              character: letter,
+              to: end,
+            }]),
+          }
+        }
+      };
+    }
   }
   return current;
 }

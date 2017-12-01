@@ -7,7 +7,7 @@ const takeTransition = (states, statemachine, char) => {
     .map(state =>
       // Get all epselon transition
       state.transitions.filter(transition => transition.character === char).map(x => x.to))
-    .reduce((a, b) => a.concat(b)); // from [[a,b],[c]] to [a,b,c] hence flatten array
+    .reduce((a, b) => a.concat(b), []); // from [[a,b],[c]] to [a,b,c] hence flatten array
   return unique(newStates);
 };
 
