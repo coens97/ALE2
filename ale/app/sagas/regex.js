@@ -157,7 +157,7 @@ const parseRegex = (state, regex, start, end) => {
       const letter = regex[0][0];
       current = {
         ...current,
-        alphabet: [...new Set([...current.alphabet, letter])],
+        alphabet: letter === '_' ? current.alphabet : [...new Set([...current.alphabet, letter])],
         states: {
           ...current.states,
           [start]: {

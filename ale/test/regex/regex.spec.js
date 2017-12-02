@@ -4,7 +4,6 @@ import { combineReducers } from 'redux';
 import statemachine from '../../app/reducers/statemachine';
 import testword from '../../app/sagas/testword';
 import regexSaga from '../../app/sagas/regex';
-import { error } from 'util';
 
 it('Can test regex', () => {
   // Combine needed sagas
@@ -18,6 +17,7 @@ it('Can test regex', () => {
       '*(a)': [['', 'Passed'], ['aaaaaaaa', 'Passed'], ['aaaabaaaa', 'No transition']],
       '.(|(a,b),c)': [['ac', 'Passed'], ['bc', 'Passed'], ['ab', 'No transition']],
       '.(|(a,b),*(c))': [['a', 'Passed'], ['c', 'No transition'], ['bccccc', 'Passed']],
+      '|(_,a)': [['a', 'Passed'], ['', 'Passed'], ['aa', 'No transition']],
     };
 
   const makePromise = (text, word, result) =>
