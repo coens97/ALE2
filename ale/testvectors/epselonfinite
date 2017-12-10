@@ -1,0 +1,10 @@
+# a finite statemachine with epselon loop
+alphabet: ab
+states: Z,A,B
+final: B
+
+transitions:
+Z,b --> A
+A,_ --> A
+A,a --> B
+end.
