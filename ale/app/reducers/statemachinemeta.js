@@ -1,4 +1,4 @@
-export default function statemachinemeta(state = { dfa: false, dot: '' }, action) {
+export default function statemachinemeta(state = { infinite: false, dfa: false, dot: '' }, action) {
   switch (action.type) {
     case 'STATEMACHINEMETA_LOADED':
       return Object.assign({}, state, action.meta);
