@@ -1,8 +1,8 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
 import { stateMachineMeta } from '../actions/statemachine';
+import { generateWordlist } from '../actions/wordlist';
 import { takeEpselonTransition, takeTransition } from './statemachine/transition';
 import { Set } from 'immutable';
-import { lchmod } from 'fs';
 
 const checkDfa = ({ alphabet, states }) => new Promise(resolve => {
   const result = !Object.values(states).some(x => {
@@ -84,6 +84,9 @@ function* createMeta({ statemachine }) {
   // wait for promisses and the result
   const dfa = yield call(() => dfaPromise);
   const infinite = yield call(() => infinitePromise);
+  if (!infinite) { // if list is not infinite, generate list of words
+    yield put(generateWordlist(statemachine));
+  }
   yield put(stateMachineMeta({ dfa, infinite }));
 }
 

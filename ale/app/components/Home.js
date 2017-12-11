@@ -5,6 +5,7 @@ import StateMeta from './StateMeta';
 import Graph from './Graph';
 import InputText from './InputText';
 import RegexText from './RegexText';
+import WordList from './WordList';
 
 export default class Home extends Component {
   render() {
@@ -20,6 +21,7 @@ export default class Home extends Component {
                 <StateMeta />
                 <InputText />
                 <RegexText />
+                <WordList />
               </nav>
             </div>
             <div className="pane">
