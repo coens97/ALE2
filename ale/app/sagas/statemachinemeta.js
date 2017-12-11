@@ -1,8 +1,8 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
+import { Set } from 'immutable';
 import { stateMachineMeta } from '../actions/statemachine';
 import { generateWordlist } from '../actions/wordlist';
 import { takeEpselonTransition, takeTransition } from './statemachine/transition';
-import { Set } from 'immutable';
 
 const checkDfa = ({ alphabet, states }) => new Promise(resolve => {
   const result = !Object.values(states).some(x => {
@@ -22,7 +22,7 @@ const checkInfinite = (statemachine) => new Promise(resolve => {
   const { states, alphabet } = statemachine;
   // Change from object to array
   const allStates = Object.keys(states)
-    .map(state => ({ ...statemachine.states[state], state }));
+    .map(state => ({ ...states[state], state }));
   let startStates = allStates.filter(state => state.initial).map(x => x.state);
   startStates = takeEpselonTransition(startStates, statemachine);
   const startVisitedStates = Set().add(startStates);

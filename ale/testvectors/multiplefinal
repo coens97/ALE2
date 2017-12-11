@@ -1,0 +1,9 @@
+# multiple final
+alphabet: ab
+states: Z,A,B
+final: A,B
+
+transitions:
+Z,a --> A
+A,b --> B
+end.
