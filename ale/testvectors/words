@@ -1,0 +1,19 @@
+# a loop between initial and final state
+alphabet: tsdrumpck
+states: A,B,C,D,E,F,G,H,I,J
+final: J
+
+transitions:
+A,_ --> B
+A,_ --> C
+A,d --> F
+B,t --> D
+C,s --> E
+D,r --> F
+E,t --> F
+F,u --> G
+G,m --> H
+H,p --> J
+G,c --> I
+I,k --> J
+end.
