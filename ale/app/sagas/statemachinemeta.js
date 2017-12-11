@@ -1,5 +1,8 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
 import { stateMachineMeta } from '../actions/statemachine';
+import { takeEpselonTransition, takeTransition } from './statemachine/transition';
+import { Set } from 'immutable';
+import { lchmod } from 'fs';
 
 const checkDfa = ({ alphabet, states }) => new Promise(resolve => {
   const result = !Object.values(states).some(x => {
@@ -15,8 +18,62 @@ const checkDfa = ({ alphabet, states }) => new Promise(resolve => {
   resolve(result);
 });
 
-const checkInfinite = ({ alphabet, states }) => new Promise(resolve => {
-  const result =  false;
+const checkInfinite = (statemachine) => new Promise(resolve => {
+  const { states, alphabet } = statemachine;
+  // Change from object to array
+  const allStates = Object.keys(states)
+    .map(state => ({ ...statemachine.states[state], state }));
+  let startStates = allStates.filter(state => state.initial).map(x => x.state);
+  startStates = takeEpselonTransition(startStates, statemachine);
+  const startVisitedStates = Set().add(startStates);
+
+  const toFinal = (currentStates, visitedStates) => {
+    if (currentStates.map(x => statemachine.states[x]).some(x => x.final)) { // if at final state
+      console.log('It is infinite!');
+      return true;
+    }
+
+    for (let i = 0, tot = alphabet.length; i < tot; i += 1) {
+      const char = alphabet[i];
+      // Take char transition
+      let movedStates = takeTransition(currentStates, statemachine, char);
+      // take epsilon transitions
+      movedStates = takeEpselonTransition(movedStates, statemachine);
+      // if didn't pass that state yet, and it is not a sink
+      if (!visitedStates.has(JSON.stringify(movedStates)) && movedStates.length !== 0) {
+        // recursively go deeper
+        if (toFinal(movedStates, visitedStates.add(JSON.stringify(movedStates)))) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  const traverse = (currentStates, visitedStates) => {
+    for (let i = 0, tot = alphabet.length; i < tot; i += 1) {
+      const char = alphabet[i];
+      // Take char transition
+      let movedStates = takeTransition(currentStates, statemachine, char);
+      // take epsilon transitions
+      movedStates = takeEpselonTransition(movedStates, statemachine);
+
+      if (visitedStates.has(JSON.stringify(movedStates))) {
+        // found a loop, check if it can go to a final state
+        console.log('Found loop!');
+        if (toFinal(movedStates, Set().add(JSON.stringify(movedStates)))) {
+          return true;
+        }
+      } else if (movedStates.length !== 0) { // if not at the "sink"
+        if (traverse(movedStates, visitedStates.add(JSON.stringify(movedStates)))) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+  const result = traverse(startStates, startVisitedStates);
+
   resolve(result);
 });
 

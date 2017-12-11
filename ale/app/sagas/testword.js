@@ -1,30 +1,6 @@
 import { takeEvery, select, put } from 'redux-saga/effects';
 import { testWordResult } from '../actions/testword';
-
-const takeTransition = (states, statemachine, char) => {
-  const newStates = states
-    .map(x => statemachine.states[x])
-    .map(state =>
-      // Get all epselon transition
-      state.transitions.filter(transition => transition.character === char).map(x => x.to))
-    .reduce((a, b) => a.concat(b), []); // from [[a,b],[c]] to [a,b,c] hence flatten array
-  return unique(newStates);
-};
-
-const takeEpselonTransition = (states, statemachine) => {
-  let currentStates = states;
-  let oldNumber;
-  do { // keep taking transitions until the number of states is not growing
-    oldNumber = currentStates.length;
-    currentStates = unique(currentStates
-      .concat(takeTransition(currentStates, statemachine, '_')));
-  }
-  while (currentStates.length !== oldNumber);
-  return currentStates;
-};
-
-const unique = (list) =>  // Remove duplicates
-   [...new Set(list)];
+import { takeEpselonTransition, takeTransition } from './statemachine/transition';
 
 function* testWord({ word }) {
   const statemachine = yield select(state => state.statemachine);
