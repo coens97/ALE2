@@ -1,0 +1,11 @@
+# a basic infinite statemachine
+alphabet: ab
+states: Z,A,B,C
+final: C
+
+transitions:
+Z,a --> A
+A,b --> Z
+Z,a --> B
+Z,b --> C
+end.

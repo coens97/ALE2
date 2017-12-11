@@ -1,0 +1,9 @@
+# a loop between initial and final state
+alphabet: a
+states: Z,A
+final: A
+
+transitions:
+Z,a --> Z
+A,a --> A
+end.
