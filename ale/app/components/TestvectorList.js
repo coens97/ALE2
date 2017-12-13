@@ -18,12 +18,12 @@ class TestvectorList extends Component {
 
   render() {
     const createItem = (item) =>
-      <option
+      (<option
         key={item}
         value={item}
       >
         {item}
-      </option>;
+      </option>);
     return (
       <div>
         <ul>

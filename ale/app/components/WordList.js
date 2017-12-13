@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 class WordList extends Component {
   props: {
-    words: string[]
+    words: Any
   };
 
   constructor(props) {
@@ -15,7 +15,7 @@ class WordList extends Component {
 
   render() {
     const renderRow = (word) => (
-      <tr>
+      <tr key={word.toString()}>
         <td>{ word }</td>
       </tr>
     );

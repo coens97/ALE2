@@ -1,4 +1,4 @@
-export default function statemachinemeta(state = { infinite: false, dfa: false, dot: '', words: [] }, action) {
+export default function statemachinemeta(state = { infinite: false, dfa: false, dot: '', words: [''] }, action) {
   switch (action.type) {
     case 'STATEMACHINE_LOADED':
       return { ...state, words: [] };
