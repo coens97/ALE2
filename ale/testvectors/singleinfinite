@@ -6,3 +6,10 @@ final: Z
 transitions:
 Z,a --> Z
 end.
+
+dfa:n
+finite:n
+
+words:
+aaaaaa,y
+b,n

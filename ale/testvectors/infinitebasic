@@ -9,3 +9,10 @@ A,b --> Z
 Z,a --> B
 Z,b --> C
 end.
+
+dfa:n
+finite:n
+
+words:
+b,y
+aaaa,n

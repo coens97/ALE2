@@ -14,3 +14,10 @@ B,C --> B
 B,C --> C
 C,B --> A
 end.
+
+dfa:n
+finite:n
+
+words:
+ABC,y
+A,y

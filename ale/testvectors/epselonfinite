@@ -8,3 +8,11 @@ Z,b --> A
 A,_ --> A
 A,a --> B
 end.
+
+dfa:n
+finite:n
+
+words:
+ba,y
+b,y
+aa,n

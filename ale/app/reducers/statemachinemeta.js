@@ -1,7 +1,34 @@
-export default function statemachinemeta(state = { infinite: false, dfa: false, dot: '', words: [''] }, action) {
+export default function statemachinemeta(state = {
+  infinite: false,
+  dfa: false,
+  dot: '',
+  words: [''],
+  expectedDfa: false,
+  expectedInfinite: false,
+  expectedWords: [''],
+}, action) {
   switch (action.type) {
+    case 'REGEX_LOAD_PASSED':
+      return { // Regex has no expected values
+        ...state,
+        expectedDfa: false,
+        expectedInfinite: false,
+        expectedWords: [''],
+      };
+    case 'TESTVECTOR_LOADFILE_PASSED': {
+      const { expectedDfa, expectedInfinite, expectedWords } = action.test;
+      return {
+        ...state,
+        expectedDfa,
+        expectedInfinite,
+        expectedWords,
+      };
+    }
     case 'STATEMACHINE_LOADED':
-      return { ...state, words: [] };
+      return {
+        ...state,
+        words: [],
+      };
     case 'STATEMACHINEMETA_LOADED':
       return Object.assign({}, state, action.meta);
     case 'STATEMACHINEGRAPH_LOADED':

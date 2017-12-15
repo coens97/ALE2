@@ -7,3 +7,11 @@ transitions:
 Z,a --> A
 A,b --> B
 end.
+
+dfa:n
+finite:n
+
+words:
+a,y
+ab,y
+abbb,n

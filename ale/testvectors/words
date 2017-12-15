@@ -18,3 +18,11 @@ G,c --> I
 I,k --> J
 I,t --> K
 end.
+
+dfa:n
+finite:y
+
+words:
+trump,y
+duck,y
+a,n

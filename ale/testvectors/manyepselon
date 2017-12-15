@@ -10,3 +10,10 @@ B,_ --> C
 C,_ --> D
 D,a --> E
 end.
+
+dfa:n
+finite:n
+
+words:
+a,y
+aaa,n

@@ -29,64 +29,98 @@ function* loadFile({ filename }) {
       states: [],
       final: [],
       transitions: [],
+      expectedDfa: false,
+      expectedInfinite: false,
+      expectedWords: [],
     };
-    let readingTransitions = false;
+
+    let readPart = 0;
     // Parse each line
     lines.some((line) => {
-      if (line.startsWith('end.')) return true; // Stop parsing when reaching end
-
-      if (!readingTransitions) {
-        if (line.startsWith('transitions:')) {
-          readingTransitions = true;
-        } else if (line.startsWith('alphabet:')) {
-          let alphabet = line
+      switch (readPart) {
+        case 0: { // parse states, final and alphabet
+          if (line.startsWith('transitions:')) {
+            readPart = 1;
+          } else if (line.startsWith('alphabet:')) {
+            let alphabet = line
             .substring(9) // Remove the word
             .split('') // String to char array
             .filter(x => x !== ' '); // Remove spaces
 
-          alphabet = Array.from(new Set(alphabet)); // Remove duplicates
-          parsedFile = {
-            ...parsedFile,
-            alphabet };
-        } else if (line.startsWith('states:')) {
-          let states = line
+            alphabet = Array.from(new Set(alphabet)); // Remove duplicates
+            parsedFile = {
+              ...parsedFile,
+              alphabet };
+          } else if (line.startsWith('states:')) {
+            let states = line
             .substring(7) // Remove the word
             .trim() // Remove space before and after
             .split(','); // String to char array
 
-          states = Array.from(new Set(states)); // Remove duplicates
-          parsedFile = {
-            ...parsedFile,
-            states };
-        } else if (line.startsWith('final:')) {
-          let final = line
+            states = Array.from(new Set(states)); // Remove duplicates
+            parsedFile = {
+              ...parsedFile,
+              states };
+          } else if (line.startsWith('final:')) {
+            let final = line
             .substring(6) // Remove the word
             .trim() // Remove space before and after
             .split(','); // String to char array
 
-          final = Array.from(new Set(final)); // Remove duplicates
-          parsedFile = {
-            ...parsedFile,
-            final };
-        } // if doesn't match ignore
-      } else { // Reading transitions
-        // Read character from it's direct location,
-        // Assuming it is written correct :D
-        const from = line[0];
-        const character = line[2];
-        const to = line[8];
-        // Create object and push to array in immutable way
-        const transition = { from, character, to };
-        const transitions = [...parsedFile.transitions, transition];
-        parsedFile = {
-          ...parsedFile,
-          transitions };
+            final = Array.from(new Set(final)); // Remove duplicates
+            parsedFile = {
+              ...parsedFile,
+              final };
+          } // if doesn't match ignore
+          break;
+        }
+        case 1: { // parse transitions
+          if (line.startsWith('end.')) {
+            readPart = 2;
+          } else {
+            // Reading transitions
+            // Read character from it's direct location,
+            // Assuming it is written correct :D
+            const from = line[0];
+            const character = line[2];
+            const to = line[8];
+            // Create object and push to array in immutable way
+            const transition = { from, character, to };
+            const transitions = [...parsedFile.transitions, transition];
+            parsedFile = {
+              ...parsedFile,
+              transitions };
+          }
+          break;
+        }
+        case 2: { // parse transitions
+          if (line.startsWith('dfa:')) {
+            parsedFile = { ...parsedFile, expectedDfa: line[4] === 'y' };
+          } else if (line.startsWith('finite:')) {
+            parsedFile = { ...parsedFile, expectedInfinite: line[7] !== 'y' };
+          } else if (line.startsWith('words:')) {
+            readPart = 3;
+          }
+          break;
+        }
+        case 3: { // parse words
+          const word = line.split(',');
+          if (word.length === 2) {
+            parsedFile = {
+              ...parsedFile,
+              expectedWords: [...parsedFile.expectedWords, [word[0], word[1] === 'y']],
+            };
+          }
+          break;
+        }
+        default:
       }
       return false; // Not finished
     });
     yield put(startLoadTestVectorfilePassed(parsedFile));
   } catch (error) {
     // When there is error make an event
+    console.error(error);
     yield put(startLoadTestVectorfileFailed(error));
   }
 }

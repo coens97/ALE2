@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 class StateMeta extends Component {
   props: {
     dfa: boolean,
-    infinite: boolean
+    infinite: boolean,
+    expectedDfa: boolean,
+    expectedInfinite: boolean
   };
 
   constructor(props) {
@@ -13,15 +15,16 @@ class StateMeta extends Component {
   }
 
   render() {
+    const checkClass = success => (success ? 'icon icon-check' : 'icon icon-cancel');
     return (
       <div>
         <h5 className="nav-group-title">Meta</h5>
         <span className="nav-group-item">
-          <span className="icon icon-check" />
+          <span className={checkClass(this.props.expectedDfa === this.props.dfa)} />
           dfa: {this.props.dfa ? 'Yes' : 'No' }
         </span>
         <span className="nav-group-item">
-          <span className="icon icon-check" />
+          <span className={checkClass(this.props.expectedInfinite === this.props.infinite)} />
           infinite: {this.props.infinite ? 'Yes' : 'No' }
         </span>
       </div>
@@ -31,7 +34,9 @@ class StateMeta extends Component {
 
 const mapStateToProps = state => ({
   dfa: state.statemachinemeta.dfa,
-  infinite: state.statemachinemeta.infinite
+  infinite: state.statemachinemeta.infinite,
+  expectedDfa: state.statemachinemeta.expectedDfa,
+  expectedInfinite: state.statemachinemeta.expectedInfinite,
 });
 
 const mapDispatchToProps = () => ({});

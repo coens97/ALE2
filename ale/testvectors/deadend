@@ -7,3 +7,12 @@ transitions:
 Z,a --> Z
 A,a --> A
 end.
+
+dfa:y
+finite:n
+
+words:
+a,y
+b,n
+aaaaaa,y
+aaaba,n
