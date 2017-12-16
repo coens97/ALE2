@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { testVectorsGetlist, startLoadTestVectorfile } from '../actions/testvectors';
+import { stateMachineToDfa } from '../actions/statemachine';
 
 class TestvectorList extends Component {
   props: {
@@ -39,8 +40,13 @@ class TestvectorList extends Component {
             </select>
           </li>
           <li style={{ padding: '10px' }}>
-            <button className="btn btn-default" onClick={() => this.props.startLoadVector(this.state.selected)}>
+            <button className="btn btn-primary" onClick={() => this.props.startLoadVector(this.state.selected)}>
               <i className="fa fa-play" />
+            </button>
+          </li>
+          <li style={{ padding: '10px' }}>
+            <button className="btn btn-default" onClick={() => this.props.stateMachineToDfa()}>
+              NDFA <i style={{float: 'none'}} className="icon icon-right" /> DFA
             </button>
           </li>
         </ul>
@@ -56,6 +62,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   testVectorsGetlist: () => {
     dispatch(testVectorsGetlist());
+  },
+  stateMachineToDfa: () => {
+    dispatch(stateMachineToDfa());
   },
   startLoadVector: (filename) => {
     dispatch(startLoadTestVectorfile(filename));

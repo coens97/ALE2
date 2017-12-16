@@ -25,3 +25,9 @@ export function stateMachineGraph(graph) {
     graph,
   };
 }
+
+export function stateMachineToDfa() {
+  return {
+    type: 'STATEMACHINEGRAPH_TODFA',
+  };
+}
