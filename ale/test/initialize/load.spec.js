@@ -38,6 +38,18 @@ it('Can read a file', () =>
             character: 'a',
             to: 'A'
           }
+        ],
+        expectedDfa: true,
+        expectedInfinite: true,
+        expectedWords: [
+          [
+            'aaaa',
+            true
+          ],
+          [
+            'bbbbbb',
+            true
+          ]
         ]
       }
     })

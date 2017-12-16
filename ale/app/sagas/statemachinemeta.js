@@ -1,8 +1,9 @@
-import { takeEvery, call, put } from 'redux-saga/effects';
+import { takeEvery, call, put, select } from 'redux-saga/effects';
 import { Set } from 'immutable';
-import { stateMachineMeta } from '../actions/statemachine';
+import { stateMachineMeta, stateMachineMetaWords } from '../actions/statemachine';
 import { generateWordlist } from '../actions/wordlist';
 import { takeEpselonTransition, takeTransition } from './statemachine/transition';
+import { testWord } from './statemachine/word';
 
 const checkDfa = ({ alphabet, states }) => new Promise(resolve => {
   const result = !Object.values(states).some(x => {
@@ -88,6 +89,12 @@ function* createMeta({ statemachine }) {
     yield put(generateWordlist(statemachine));
   }
   yield put(stateMachineMeta({ dfa, infinite }));
+
+  // Test words in testvector
+  const expectedWords = yield select(state => state.statemachinemeta.expectedWords);
+  const resultWords = expectedWords.map((word) =>
+    [...word, testWord(statemachine, word[0]) === 'Passed']);
+  yield put(stateMachineMetaWords(resultWords));
 }
 
 function* stateMachineMetaSaga() {

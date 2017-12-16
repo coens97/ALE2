@@ -12,6 +12,13 @@ export function stateMachineMeta(meta) {
   };
 }
 
+export function stateMachineMetaWords(words) {
+  return {
+    type: 'STATEMACHINEMETA_WORDS',
+    words,
+  };
+}
+
 export function stateMachineGraph(graph) {
   return {
     type: 'STATEMACHINEGRAPH_LOADED',

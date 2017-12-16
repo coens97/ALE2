@@ -1,44 +1,15 @@
 import { takeEvery, select, put } from 'redux-saga/effects';
 import { testWordResult } from '../actions/testword';
-import { takeEpselonTransition, takeTransition } from './statemachine/transition';
+import { testWord } from './statemachine/word';
 
-function* testWord({ word }) {
+function* testSingleWord({ word }) {
   const statemachine = yield select(state => state.statemachine);
-
-  // Test whetever statemachine is loaded
-  if (!(('alphabet' in statemachine) && ('states' in statemachine))) {
-    yield put(testWordResult('No statemachine'));
-    return;
-  }
-
-  const allStates = Object.keys(statemachine.states)
-    .map(state => ({ ...statemachine.states[state], state }));
-  let currentStates = allStates.filter(state => state.initial).map(x => x.state);
-
-  for (let i = 0, len = word.length; i < len; i += 1) {
-    // Take all epsilon states
-    currentStates = takeEpselonTransition(currentStates, statemachine);
-    // Take the step for the character
-    currentStates = takeTransition(currentStates, statemachine, word[i]);
-    if (currentStates.length === 0) {
-      yield put(testWordResult('No transition'));
-      return;
-    }
-  }
-
-  currentStates = takeEpselonTransition(currentStates, statemachine);
-
-  // Check if any final state
-  if (!currentStates.map(x => statemachine.states[x]).some(x => x.final)) {
-    yield put(testWordResult('No final state'));
-    return;
-  }
-
-  yield put(testWordResult('Passed'));
+  const result = testWord(statemachine, word);
+  yield put(testWordResult(result));
 }
 
 function* testwordSaga() {
-  yield takeEvery('TESRWORD_TEST', testWord);
+  yield takeEvery('TESRWORD_TEST', testSingleWord);
 }
 
 export default testwordSaga;

@@ -5,7 +5,7 @@ export default function statemachinemeta(state = {
   words: [''],
   expectedDfa: false,
   expectedInfinite: false,
-  expectedWords: [''],
+  expectedWords: [['', true]],
 }, action) {
   switch (action.type) {
     case 'REGEX_LOAD_PASSED':
