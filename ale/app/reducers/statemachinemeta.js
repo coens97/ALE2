@@ -35,6 +35,8 @@ export default function statemachinemeta(state = {
       return { ...state, dot: action.graph };
     case 'GENERATE_WORDLIST_SUCCESS':
       return { ...state, words: action.words };
+    case 'STATEMACHINEMETA_WORDS':
+      return { ...state, expectedWords: action.words };
     default:
       return state;
   }
