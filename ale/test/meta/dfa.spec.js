@@ -1,5 +1,7 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import { fork } from 'redux-saga/effects';
+import { combineReducers } from 'redux';
+import statemachinemeta from '../../app/reducers/statemachinemeta';
 import stateMachineMetaSaga from '../../app/sagas/statemachinemeta';
 import testVectorParserSaga from '../../app/sagas/testvectorparser';
 
@@ -15,12 +17,13 @@ it('Can test dfa', () => {
 
   const makePromise = (filename, dfa) =>
     expectSaga(saga)
+      .withReducer(combineReducers({ statemachinemeta }))
       .put.like({ action: { type: 'TESTVECTOR_LOADFILE_PASSED' } }) // Is tested inside other test
       .put.like({ action: { type: 'STATEMACHINE_LOADED' } }) // Skip
-      .put({
+      .put.like({ action: {
         type: 'STATEMACHINEMETA_LOADED',
         meta: { dfa }
-      })
+      }})
       .dispatch({ // Call to load file
         type: 'TESTVECTOR_LOADFILE',
         filename,
