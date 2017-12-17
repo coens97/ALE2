@@ -4,8 +4,10 @@ import { testWord } from './statemachine/word';
 
 function* testSingleWord({ word }) {
   const statemachine = yield select(state => state.statemachine);
-  const result = testWord(statemachine, word);
-  yield put(testWordResult(result));
+  if ('alphabet' in statemachine) {
+    const result = testWord(statemachine, word);
+    yield put(testWordResult(result));
+  }
 }
 
 function* testwordSaga() {

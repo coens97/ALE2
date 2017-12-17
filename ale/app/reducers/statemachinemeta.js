@@ -5,7 +5,7 @@ export default function statemachinemeta(state = {
   words: [''],
   expectedDfa: false,
   expectedInfinite: false,
-  expectedWords: [['', true]],
+  expectedWords: [],
 }, action) {
   switch (action.type) {
     case 'REGEX_LOAD_PASSED':
@@ -13,7 +13,7 @@ export default function statemachinemeta(state = {
         ...state,
         expectedDfa: false,
         expectedInfinite: false,
-        expectedWords: [''],
+        expectedWords: [],
       };
     case 'TESTVECTOR_LOADFILE_PASSED': {
       const { expectedDfa, expectedInfinite, expectedWords } = action.test;

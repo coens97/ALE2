@@ -7,6 +7,7 @@ class TestvectorList extends Component {
   props: {
     testVectorsGetlist: () => void,
     startLoadVector: (x: string) => void,
+    stateMachineToDfa: () => void,
     files: string[]
   };
 
@@ -46,7 +47,7 @@ class TestvectorList extends Component {
           </li>
           <li style={{ padding: '10px' }}>
             <button className="btn btn-default" onClick={() => this.props.stateMachineToDfa()}>
-              NDFA <i style={{float: 'none'}} className="icon icon-right" /> DFA
+              NDFA <i style={{ float: 'none' }} className="icon icon-right" /> DFA
             </button>
           </li>
         </ul>

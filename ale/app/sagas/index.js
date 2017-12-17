@@ -3,6 +3,7 @@ import { testVectorsGetlist, testVectorsGetlistSuccess, testVectorsGetlistFailed
 import testVectorParserSaga from './testvectorparser';
 import stateMachineMetaSaga from './statemachinemeta';
 import stateMachineGraphSaga from './statemachinegraph';
+import ndfaToDfaSaga from './ndfatodfa';
 import generateWordsSaga from './wordlist';
 import regexSaga from './regex';
 import testwordSaga from './testword';
@@ -44,6 +45,7 @@ function* mySaga() {
   yield fork(testwordSaga);
   yield fork(regexSaga);
   yield fork(generateWordsSaga);
+  yield fork(ndfaToDfaSaga);
   yield call(startApp);
 }
 

@@ -10,7 +10,7 @@ A,a --> B
 end.
 
 dfa:n
-finite:n
+finite:y
 
 words:
 ba,y
