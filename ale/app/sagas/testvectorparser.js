@@ -84,8 +84,10 @@ function* loadFile({ filename }) {
             const from = line[0];
             const character = line[2];
             const to = line[8];
+            const stackFrom = '_';
+            const stackTo = '_';
             // Create object and push to array in immutable way
-            const transition = { from, character, to };
+            const transition = { from, character, to, stackFrom, stackTo };
             const transitions = [...parsedFile.transitions, transition];
             parsedFile = {
               ...parsedFile,
@@ -135,7 +137,12 @@ function* fileToStatemachine({ test }) {
         final: test.final.includes(item),
         transitions: test.transitions
           .filter(x => x.from === item)
-          .map(x => ({ character: x.character, to: x.to }))
+          .map(x => ({
+            character: x.character,
+            to: x.to,
+            stackFrom: x.stackFrom,
+            stackTo: x.stackTo,
+          }))
       }
     }), {});
   const statemachine = {

@@ -84,10 +84,14 @@ const parseRegex = (state, regex, start, end) => {
           {
             character: '_',
             to: end,
+            stackFrom: '_',
+            stackTo: '_',
           },
           {
             character: '_',
             to: startState,
+            stackFrom: '_',
+            stackTo: '_',
           }
         ]);
       // add epselon from start to end, and add epselon to first state of the repeat
@@ -95,10 +99,14 @@ const parseRegex = (state, regex, start, end) => {
         [{
           character: '_',
           to: end,
+          stackFrom: '_',
+          stackTo: '_',
         },
         {
           character: '_',
           to: startState,
+          stackFrom: '_',
+          stackTo: '_',
         }
         ]);
       current = parseRegex(current, regex[1], startState, endState); // Recursively parse leaves
@@ -118,10 +126,14 @@ const parseRegex = (state, regex, start, end) => {
         [{
           character: '_',
           to: startUpState,
+          stackFrom: '_',
+          stackTo: '_',
         },
         {
           character: '_',
           to: startDownState,
+          stackFrom: '_',
+          stackTo: '_',
         }
         ]);
       // add end states
@@ -132,11 +144,15 @@ const parseRegex = (state, regex, start, end) => {
         [{
           character: '_',
           to: end,
+          stackFrom: '_',
+          stackTo: '_',
         }]);
       current = addStateTransitions(current, endDownState,
         [{
           character: '_',
           to: end,
+          stackFrom: '_',
+          stackTo: '_',
         }]);
       // run the 2 leaves
       current = parseRegex(current, regex[1], startUpState, endUpState);
@@ -165,6 +181,8 @@ const parseRegex = (state, regex, start, end) => {
             transitions: current.states[start].transitions.concat([{
               character: letter,
               to: end,
+              stackFrom: '_',
+              stackTo: '_',
             }]),
           }
         }

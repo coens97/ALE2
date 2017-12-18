@@ -86,6 +86,8 @@ function* toDfa() {
         {
           character: char,
           to: usedStates[movedStatesString],
+          stackFrom: '_',
+          stackTo: '_',
         },
       );
     }

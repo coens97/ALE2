@@ -1,0 +1,20 @@
+# a^2n b^n
+
+alphabet: ab
+states: A,B,C
+final: C
+
+transitions:
+A,a [_,1] --> B
+B,_ [_,1] --> A
+A,_ --> C
+C,b [1,_] --> C
+end.
+
+dfa:n
+finite:n
+
+words:
+aab,y
+aaaabb,y
+ab,n

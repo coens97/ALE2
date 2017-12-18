@@ -21,22 +21,30 @@ it('Can read a file', () =>
           {
             from: 'A',
             character: 'a',
-            to: 'A'
+            to: 'A',
+            stackFrom: '_',
+            stackTo: '_',
           },
           {
             from: 'A',
             character: 'b',
-            to: 'B'
+            to: 'B',
+            stackFrom: '_',
+            stackTo: '_',
           },
           {
             from: 'B',
             character: 'b',
-            to: 'B'
+            to: 'B',
+            stackFrom: '_',
+            stackTo: '_',
           },
           {
             from: 'B',
             character: 'a',
-            to: 'A'
+            to: 'A',
+            stackFrom: '_',
+            stackTo: '_',
           }
         ],
         expectedDfa: true,
@@ -67,11 +75,15 @@ it('Can read a file', () =>
             transitions: [
               {
                 character: 'a',
-                to: 'A'
+                to: 'A',
+                stackFrom: '_',
+                stackTo: '_',
               },
               {
                 character: 'b',
-                to: 'B'
+                to: 'B',
+                stackFrom: '_',
+                stackTo: '_',
               }
             ]
           },
@@ -81,11 +93,15 @@ it('Can read a file', () =>
             transitions: [
               {
                 character: 'b',
-                to: 'B'
+                to: 'B',
+                stackFrom: '_',
+                stackTo: '_',
               },
               {
                 character: 'a',
-                to: 'A'
+                to: 'A',
+                stackFrom: '_',
+                stackTo: '_',
               }
             ]
           }
