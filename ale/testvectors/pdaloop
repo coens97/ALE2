@@ -1,0 +1,15 @@
+# loop in PDA
+
+alphabet: a
+states: A,B
+final: B
+
+transitions:
+A,a [_,1] --> B
+B,_ [_,1] --> B
+end.
+
+dfa:n
+finite:n
+
+words:

@@ -1,0 +1,19 @@
+# loop in PDA between word
+
+alphabet: a
+states: A,B,C
+final: C
+
+transitions:
+A,_ [_,1] --> B
+B,_ [_,1] --> A
+B,a [2,_] --> C
+end.
+
+dfa:n
+finite:n
+
+words:
+aaaa,n
+a,n
+,n
