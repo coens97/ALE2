@@ -15,9 +15,15 @@ function* createGraph({ statemachine }) {
     if (state.initial) {
       dotfile = [...dotfile, `"" -> "${s}"`];
     }
+    const showChar = char => (char === '_' ? 'ε' : char);
     dotfile = dotfile.concat(
       state.transitions
-        .map(x => `"${s}" -> "${x.to}" [label="${x.character === '_' ? 'ε' : x.character}"]`)
+        .map(x => {
+          if (x.stackFrom !== '_' || x.stackTo !== '_') {
+            return `"${s}" -> "${x.to}" [label="${showChar(x.character)} [${showChar(x.stackFrom)}/${showChar(x.stackTo)}]"]`;
+          }
+          return `"${s}" -> "${x.to}" [label="${showChar(x.character)}"]`;
+        })
     );
     return false; // keep looping
   });
