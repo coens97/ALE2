@@ -78,14 +78,30 @@ function* loadFile({ filename }) {
           if (line.startsWith('end.')) {
             readPart = 2;
           } else {
-            // Reading transitions
-            // Read character from it's direct location,
-            // Assuming it is written correct :D
-            const from = line[0];
-            const character = line[2];
-            const to = line[8];
-            const stackFrom = '_';
-            const stackTo = '_';
+            // Parse transitions by splitting the string
+            const splitArrow = line.split('-->');
+            if (splitArrow.length !== 2) {
+              return false;
+            }
+            const to = splitArrow[1].trim();
+            const pdaSplit = splitArrow[0].split('[');
+            let stackFrom = '_';
+            let stackTo = '_';
+            if (pdaSplit.length === 2) {
+              const stacks = pdaSplit[1].split(']')[0].split(',').map(x => x.trim());
+              if (stacks.length === 2) {
+                stackFrom = stacks[0];
+                stackTo = stacks[1];
+              } else {
+                console.warning("Couldn't parse PDA stack");
+              }
+            }
+            const fromAndChar = pdaSplit[0].split(',').map(x => x.trim());
+            if (fromAndChar.length !== 2) {
+              return false;
+            }
+            const from = fromAndChar[0];
+            const character = fromAndChar[1];
             // Create object and push to array in immutable way
             const transition = { from, character, to, stackFrom, stackTo };
             const transitions = [...parsedFile.transitions, transition];
