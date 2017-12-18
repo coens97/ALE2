@@ -38,7 +38,7 @@ export const testPdaWord = (statemachine, word) => {
       doTransition(char, stackPeek) || // 1. transition whose [symbol + pop stack] matches the [current input symbol + current top stack] (if the stack is not empty)
       doTransition(char, '_'); // 2. transition with epsilon pop stack whose symbol matches the current input symbol
     if (!isMovedState) {
-      const takeEpselon = 
+      const takeEpselon =
         doTransition('_', stackPeek) || // 3. transition with epsilon symbol whose pop stack matches the current top stack  (if the stack is not empty)
         doTransition('_', '_'); // 4. transition with epsilon symbol and epsilon pop stack
       if (takeEpselon) {
@@ -52,6 +52,13 @@ export const testPdaWord = (statemachine, word) => {
     }
   }
 
+  // Keep taking epselon transitions
+  while (!(statemachine.states[currentState].final && stack.size === 0)
+    && doTransition('_', '_')) {
+    if (epselonSteps >= maxEpselonSteps) { // Stop infinite loop
+      return 'Epselon overflow end';
+    }
+  }
   if (!statemachine.states[currentState].final) {
     return 'No final state';
   }
