@@ -126,7 +126,7 @@ function* loadFile({ filename }) {
           if (word.length === 2) {
             parsedFile = {
               ...parsedFile,
-              expectedWords: [...parsedFile.expectedWords, [word[0], word[1] === 'y']],
+              expectedWords: [...parsedFile.expectedWords, [word[0], word[1][0] === 'y']],
             };
           }
           break;
