@@ -54,7 +54,7 @@ export const testPdaWord = (statemachine, word) => {
 
   // Keep taking epselon transitions
   while (!(statemachine.states[currentState].final && stack.size === 0)
-    && doTransition('_', '_')) {
+    && (doTransition('_', stack.peek()) || doTransition('_', '_'))) {
     if (epselonSteps >= maxEpselonSteps) { // Stop infinite loop
       return 'Epselon overflow end';
     }
