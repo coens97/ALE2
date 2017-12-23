@@ -71,12 +71,18 @@ function* loadFile({ filename }) {
             parsedFile = {
               ...parsedFile,
               final };
-          } // if doesn't match ignore
+          } else if (line.startsWith('dfa:')) {
+            parsedFile = { ...parsedFile, expectedDfa: line[4] === 'y' };
+          } else if (line.startsWith('finite:')) {
+            parsedFile = { ...parsedFile, expectedInfinite: line[7] !== 'y' };
+          } else if (line.startsWith('words:')) {
+            readPart = 2;
+          }// if doesn't match ignore
           break;
         }
         case 1: { // parse transitions
           if (line.startsWith('end.')) {
-            readPart = 2;
+            readPart = 0;
           } else {
             // Parse transitions by splitting the string
             const splitArrow = line.split('-->');
@@ -111,23 +117,17 @@ function* loadFile({ filename }) {
           }
           break;
         }
-        case 2: { // parse transitions
-          if (line.startsWith('dfa:')) {
-            parsedFile = { ...parsedFile, expectedDfa: line[4] === 'y' };
-          } else if (line.startsWith('finite:')) {
-            parsedFile = { ...parsedFile, expectedInfinite: line[7] !== 'y' };
-          } else if (line.startsWith('words:')) {
-            readPart = 3;
-          }
-          break;
-        }
-        case 3: { // parse words
-          const word = line.split(',');
-          if (word.length === 2) {
-            parsedFile = {
-              ...parsedFile,
-              expectedWords: [...parsedFile.expectedWords, [word[0], word[1][0] === 'y']],
-            };
+        case 2: { // parse words
+          if (line.startsWith('end.')) {
+            readPart = 0;
+          } else {
+            const word = line.split(',');
+            if (word.length === 2) {
+              parsedFile = {
+                ...parsedFile,
+                expectedWords: [...parsedFile.expectedWords, [word[0], word[1][0] === 'y']],
+              };
+            }
           }
           break;
         }
