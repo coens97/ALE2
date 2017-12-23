@@ -6,6 +6,7 @@ import stateMachineGraphSaga from './statemachinegraph';
 import ndfaToDfaSaga from './ndfatodfa';
 import generateWordsSaga from './wordlist';
 import regexSaga from './regex';
+import stateMachineSaveSaga from './statemachinesave';
 import testwordSaga from './testword';
 
 const fs = require('fs');
@@ -46,6 +47,7 @@ function* mySaga() {
   yield fork(regexSaga);
   yield fork(generateWordsSaga);
   yield fork(ndfaToDfaSaga);
+  yield fork(stateMachineSaveSaga);
   yield call(startApp);
 }
 

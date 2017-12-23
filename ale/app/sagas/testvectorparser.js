@@ -72,9 +72,9 @@ function* loadFile({ filename }) {
               ...parsedFile,
               final };
           } else if (line.startsWith('dfa:')) {
-            parsedFile = { ...parsedFile, expectedDfa: line[4] === 'y' };
+            parsedFile = { ...parsedFile, expectedDfa: line.includes('y') };
           } else if (line.startsWith('finite:')) {
-            parsedFile = { ...parsedFile, expectedInfinite: line[7] !== 'y' };
+            parsedFile = { ...parsedFile, expectedInfinite: !line.includes('y') };
           } else if (line.startsWith('words:')) {
             readPart = 2;
           }// if doesn't match ignore

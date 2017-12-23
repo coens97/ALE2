@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { testVectorsGetlist, startLoadTestVectorfile } from '../actions/testvectors';
-import { stateMachineToDfa } from '../actions/statemachine';
+import { stateMachineToDfa, stateMachineSave } from '../actions/statemachine';
 
 class TestvectorList extends Component {
   props: {
     testVectorsGetlist: () => void,
     startLoadVector: (x: string) => void,
     stateMachineToDfa: () => void,
+    stateMachineSave: () => void,
     files: string[]
   };
 
@@ -50,6 +51,11 @@ class TestvectorList extends Component {
               NDFA <i style={{ float: 'none' }} className="icon icon-right" /> DFA
             </button>
           </li>
+          <li style={{ padding: '10px', float: 'right' }}>
+            <button className="btn btn-primary" onClick={() => this.props.stateMachineSave()}>
+              Save
+            </button>
+          </li>
         </ul>
       </div>
     );
@@ -66,6 +72,9 @@ const mapDispatchToProps = dispatch => ({
   },
   stateMachineToDfa: () => {
     dispatch(stateMachineToDfa());
+  },
+  stateMachineSave: () => {
+    dispatch(stateMachineSave());
   },
   startLoadVector: (filename) => {
     dispatch(startLoadTestVectorfile(filename));

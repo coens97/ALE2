@@ -1,0 +1,22 @@
+alphabet: abc
+states: i,f,bu2,bd2,eu2,ed2,m6,bu7,bd7,eu7,ed7,m11
+final: f
+transitions:
+i,_ [_,_] --> bu2
+i,_ [_,_] --> bd2
+bu2,_ [_,_] --> bu7
+bu2,_ [_,_] --> bd7
+bd2,c [_,_] --> m11
+eu2,_ [_,_] --> f
+ed2,_ [_,_] --> f
+m6,a [_,_] --> eu2
+bu7,a [_,_] --> eu7
+bd7,b [_,_] --> ed7
+eu7,_ [_,_] --> m6
+ed7,_ [_,_] --> m6
+m11,a [_,_] --> ed2
+end.
+dfa:n
+finite:y
+words:
+end.

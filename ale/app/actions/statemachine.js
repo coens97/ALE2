@@ -31,3 +31,9 @@ export function stateMachineToDfa() {
     type: 'STATEMACHINEGRAPH_TODFA',
   };
 }
+
+export function stateMachineSave() {
+  return {
+    type: 'STATEMACHINE_SAVE',
+  };
+}
