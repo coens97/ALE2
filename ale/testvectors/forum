@@ -1,0 +1,58 @@
+# The statemachine checks input for an online forum
+# Purpose is to whitelist the HTML following tags:
+# <b> </b> <i> </i> <u> </u>
+alphabet: <>abcdefghijklmnopqrstuvwxyz
+states: Z,A,B,C
+final: Z
+
+transitions:
+Z,a --> Z
+Z,b --> Z
+Z,c --> Z
+Z,d --> Z
+Z,e --> Z
+Z,f --> Z
+Z,g --> Z
+Z,h --> Z
+Z,i --> Z
+Z,j --> Z
+Z,k --> Z
+Z,l --> Z
+Z,m --> Z
+Z,n --> Z
+Z,o --> Z
+Z,p --> Z
+Z,q --> Z
+Z,r --> Z
+Z,s --> Z
+Z,t --> Z
+Z,u --> Z
+Z,v --> Z
+Z,w --> Z
+Z,x --> Z
+Z,y --> Z
+Z,z --> Z
+Z,< --> A
+A,b [_,b] --> B
+A,i [_,i] --> B
+A,u [_,u] --> B
+B,> --> Z
+A,/ --> C
+C,b [b,_] --> B
+C,i [i,_] --> B
+C,u [u,_] --> B
+end.
+
+dfa:n
+finite:n
+
+words:
+test,y
+<b>a,n
+<b>b</b>,y
+<b><i>c</b></i>,n
+<b><i>d</i></b>,y
+<b>e</u>,n
+f</b>,n
+<p>g</p>,n
+<b>a</b><u>b</u>,y

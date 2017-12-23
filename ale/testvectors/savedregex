@@ -19,4 +19,8 @@ end.
 dfa:n
 finite:y
 words:
+aa,y
+ab,n
+ba,y
+ca,y
 end.
