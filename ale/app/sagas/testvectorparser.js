@@ -45,7 +45,7 @@ function* loadFile({ filename }) {
             let alphabet = line
             .substring(9) // Remove the word
             .split('') // String to char array
-            .filter(x => x !== ' '); // Remove spaces
+            .filter(x => x !== ' ' && x !== '\n' && x !== '\r' && x !== '\r\n'); // Remove spaces
 
             alphabet = Array.from(new Set(alphabet)); // Remove duplicates
             parsedFile = {
