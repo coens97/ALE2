@@ -1,7 +1,7 @@
 # ALE2 Automata and Process theory
 ![Screenshot](screenshot.png "Screesnshot")
 
-The application is created as deliverable for a school assignment. The application can handles statemachines. The statemachine can be loaded through a textfile or generated from a language describing the statemachine. Then if the statemachine is infinite, all the possible words are generated.
+The application is created as deliverable for a school assignment. The application can handle statemachines. The statemachine can be loaded through a textfile or generated from a language describing the statemachine. Then if the statemachine is infinite, all the possible words are generated.
 
 ## Programming stack
  - **Electron** Desktop wrapper
